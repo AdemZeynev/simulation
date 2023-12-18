@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Симулатор на златното сечение</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        label {
+            color: #555;
+            margin-right: 10px;
+        }
+
+        input {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 80px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        canvas {
+            border: 2px solid #333;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        #ratio-display {
+            font-size: 18px;
+            color: #333;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Симулатор на златното сечение</h2>
+    <label for="length">Дължина на отсечката:</label>
+    <input type="number" id="length" value="300">
+    <br>
+    <button onclick="drawGoldenRatio()">Изчертай златното сечение</button>
+    <div id="ratio-display"></div>
+    <canvas id="canvas" width="500" height="300"></canvas>
+
+    <script>
+        function drawGoldenRatio() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const ratioDisplay = document.getElementById('ratio-display');
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const length = parseFloat(document.getElementById('length').value);
+
+            // Златното сечение (златно число)
+            const phi = (1 + Math.sqrt(5)) / 2;
+
+            // Разделяме отсечката на две части в съотношение на златното сечение
+            const segment1 = length / phi;
+            const segment2 = length - segment1;
+
+            // Изчертаване на отсечките
+            ctx.beginPath();
+            ctx.moveTo(50, 150);
+            ctx.lineTo(50 + segment1, 150);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(50 + segment1, 150);
+            ctx.lineTo(50 + segment1 + segment2, 150);
+            ctx.stroke();
+
+            // Изчисляване и изчертаване на златното сечение
+            const goldenRatioPoint = 50 + segment1;
+            ctx.beginPath();
+            ctx.moveTo(goldenRatioPoint, 145);
+            ctx.lineTo(goldenRatioPoint, 155);
+            ctx.strokeStyle = "red";
+            ctx.stroke();
+
+            // Извеждане на текст
+            ctx.fillStyle = "black";
+            ctx.fillText(`A (0,0)`, 45, 160);
+            ctx.fillText(`B (${segment1.toFixed(2)},0)`, 55 + segment1, 160);
+            ctx.fillText(`C (${(segment1 + segment2).toFixed(2)},0)`, 55 + segment1 + segment2, 160);
+            ctx.fillText(`Златното сечение`, goldenRatioPoint - 25, 130);
+
+            // Показване на съотношението върху чертежа
+            const ratio = segment1 / segment2;
+            ratioDisplay.innerHTML = `Съотношение: ${ratio.toFixed(2)}`;
+
+            // Показване на съотношението като текст в Canvas
+            ctx.fillStyle = "#333";
+            ctx.fillText(`Съотношение: ${ratio.toFixed(2)}`, 10, canvas.height - 20);
+            ctx.fillText(`Дължина AB: ${segment1.toFixed(2)}`, 10, canvas.height - 40);
+            ctx.fillText(`Дължина BC: ${segment2.toFixed(2)}`, 10, canvas.height - 60);
+        }
+    </script>
+</body>
+</html>
